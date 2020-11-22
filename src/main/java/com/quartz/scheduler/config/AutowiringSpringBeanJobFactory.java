@@ -1,4 +1,4 @@
-package com.adobe.xad.quartz.config;
+package com.quartz.scheduler.config;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;

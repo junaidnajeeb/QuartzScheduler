@@ -1,4 +1,4 @@
-package com.adobe.xad.quartz.service;
+package com.quartz.scheduler.service;
 
 import java.io.IOException;
 import org.quartz.JobDetail;
@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.adobe.xad.quartz.config.QuartzConfig;
-import com.adobe.xad.quartz.model.BaseJob;
+import com.quartz.scheduler.config.QuartzConfig;
+import com.quartz.scheduler.model.BaseJob;
 
 @Service
 public class SchedulerService {

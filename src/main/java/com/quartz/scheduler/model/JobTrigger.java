@@ -1,4 +1,4 @@
-package com.adobe.xad.quartz.model;
+package com.quartz.scheduler.model;
 
 import org.quartz.Trigger;
 import com.fasterxml.jackson.annotation.JsonSubTypes;

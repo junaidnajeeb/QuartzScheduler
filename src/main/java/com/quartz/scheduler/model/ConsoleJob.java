@@ -1,4 +1,4 @@
-package com.adobe.xad.quartz.model;
+package com.quartz.scheduler.model;
 
 import java.util.HashMap;
 import java.util.Map;

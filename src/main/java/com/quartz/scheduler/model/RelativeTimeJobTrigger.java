@@ -1,4 +1,4 @@
-package com.adobe.xad.quartz.model;
+package com.quartz.scheduler.model;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;

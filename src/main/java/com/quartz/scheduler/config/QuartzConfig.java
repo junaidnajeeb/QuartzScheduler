@@ -1,4 +1,4 @@
-package com.adobe.xad.quartz.config;
+package com.quartz.scheduler.config;
 
 import java.io.IOException;
 import java.util.Properties;
