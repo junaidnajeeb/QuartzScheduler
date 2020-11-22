@@ -53,3 +53,42 @@ http://localhost:8080/v2/api-docs
 ```
 http://localhost:8080/swagger-ui.html#
 ```
+
+
+### APIs
+#### Console Job with Relative Trigger
+```
+POST /scheduler/createJob/group_1 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Cookie: JSESSIONID=311DAEE50AD0E5E5AB1E189A7C46C458
+
+{
+    "type" : "console",
+    "name": "group_1:console",
+    "message": "----> Coffee Please",
+    "jobTrigger" : {
+        "duration" : "5",
+        "unit" : "SECONDS",
+        "type" : "relative"
+    }
+}
+```
+
+#### Console Job with Fixed Trigger
+```
+POST /scheduler/createJob/group_1 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Cookie: JSESSIONID=311DAEE50AD0E5E5AB1E189A7C46C458
+
+{
+    "type" : "console",
+    "name": "group_1:console",
+    "message": "----> Coffee Please",
+    "jobTrigger" : {
+        "when" : "2020-11-22T07:45:00Z",
+        "type" : "fixed"
+    }
+}
+```

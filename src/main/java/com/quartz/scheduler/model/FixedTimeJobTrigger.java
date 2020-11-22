@@ -19,6 +19,7 @@ public class FixedTimeJobTrigger extends JobTrigger {
 
   @Override
   protected Trigger buildTrigger() {
+
     return TriggerBuilder.newTrigger().startAt(Date.from(getWhen())).build();
   }
   

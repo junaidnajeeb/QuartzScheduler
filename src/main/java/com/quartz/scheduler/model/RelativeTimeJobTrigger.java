@@ -18,7 +18,7 @@ public class RelativeTimeJobTrigger extends JobTrigger {
 
 
   public void setUnit(String unit) {
-    this.unit = unit;
+    this.unit = unit.toUpperCase();
   }
 
   public Long getDuration() {
@@ -37,7 +37,7 @@ public class RelativeTimeJobTrigger extends JobTrigger {
         .startAt(
             Date.from(Instant.now()
             .plus(duration, 
-                ChronoUnit.valueOf(StringUtils.capitalize(getUnit()))
+                ChronoUnit.valueOf(getUnit())
                 )
             )
         )
