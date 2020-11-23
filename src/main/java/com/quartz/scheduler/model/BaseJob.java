@@ -16,7 +16,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({@JsonSubTypes.Type(value = ConsoleJob.class, name = "console")})
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = ConsoleJob.class, name = "console"),
+  @JsonSubTypes.Type(value = HttpJob.class, name = "http")
+})
 public abstract class BaseJob implements Job, Runnable {
 
   private static final String ID_DATAMAP_KEY = "id";
@@ -72,7 +75,7 @@ public abstract class BaseJob implements Job, Runnable {
   public Trigger buildQuartzFixedTimeTrigger(Instant startTIme) {
     return TriggerBuilder.newTrigger().startAt(Date.from(startTIme)).build();
   }
-  
+
   public Trigger buildTrigger() {
 
       return this.getJobTrigger().buildTrigger();

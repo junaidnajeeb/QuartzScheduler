@@ -108,3 +108,45 @@ Content-Type: application/json
     }
 }
 ```
+
+#### Http Job POST with relative Expression
+```
+POST /scheduler/createJob/group_1 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "type" : "http",
+    "name": "group_2:http8",
+    "method": "POST",
+    "headers": {"Content-Type": "application/json"},
+    "body": "{\"field\":\"value\"}",
+    "url": "http://httpbin.org/post",
+    "jobTrigger" : {
+        "duration" : 10,
+        "unit" : "Seconds",
+        "type" : "relative"
+    }
+}
+```
+
+#### Http Job GET with relative Expression
+```
+POST /scheduler/createJob/group_1 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Cookie: JSESSIONID=311DAEE50AD0E5E5AB1E189A7C46C458
+
+{
+    "type" : "http",
+    "name": "group_2:http8",
+    "method": "GET",
+    "headers": {"Content-Type": "application/json"},
+    "url": "http://httpbin.org/get",
+    "jobTrigger" : {
+        "duration" : 10,
+        "unit" : "Seconds",
+        "type" : "relative"
+    }
+}
+```

@@ -31,6 +31,7 @@ public class ConsoleJob extends BaseJob {
     logger.info("Executing job for id {}", getId());
 
     logger.info("Message Found={}", consoleMessaage);
+    logger.info("Message Found={}", message);
 
   }
 
