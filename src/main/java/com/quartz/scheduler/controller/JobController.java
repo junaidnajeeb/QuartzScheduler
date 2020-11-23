@@ -1,5 +1,7 @@
 package com.quartz.scheduler.controller;
 
+import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,5 +32,14 @@ public class JobController {
 
     return ResponseEntity.ok(job);
   }
+  
+  
+  @RequestMapping(value = "/jobs", method = RequestMethod.GET)
+  public Set<String> getJobKeys() {
+    return schedulerService.getJobKeys();
+  }
+  
+
+  
 
 }
