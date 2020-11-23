@@ -61,7 +61,6 @@ http://localhost:8080/swagger-ui.html#
 POST /scheduler/createJob/group_1 HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
-Cookie: JSESSIONID=311DAEE50AD0E5E5AB1E189A7C46C458
 
 {
     "type" : "console",
@@ -75,12 +74,11 @@ Cookie: JSESSIONID=311DAEE50AD0E5E5AB1E189A7C46C458
 }
 ```
 
-#### Console Job with Fixed Trigger
+#### Console Job with Fixed Trigger (Time in UTC)
 ```
 POST /scheduler/createJob/group_1 HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
-Cookie: JSESSIONID=311DAEE50AD0E5E5AB1E189A7C46C458
 
 {
     "type" : "console",
@@ -89,6 +87,24 @@ Cookie: JSESSIONID=311DAEE50AD0E5E5AB1E189A7C46C458
     "jobTrigger" : {
         "when" : "2020-11-22T07:45:00Z",
         "type" : "fixed"
+    }
+}
+```
+
+#### Console Job with Cron Expression
+see http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html for how to create cron string
+```
+POST /scheduler/createJob/group_1 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "type" : "console",
+    "name": "group_2:console",
+    "message": "----> Coffee Please every 5 mins",
+    "jobTrigger" : {
+        "cronExpression" : "0 0/5 * * * ?",
+        "type" : "cron"
     }
 }
 ```
