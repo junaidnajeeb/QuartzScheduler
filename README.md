@@ -31,12 +31,12 @@ The following guides illustrate how to use some features concretely:
 
 ### BUILD DOCKER IMAGE
 ```
-docker build -t greeting-app .
+docker build -t quartz-app .
 ```
 
 ### RUN DETACTED CONTAINER WITH ALL CONFIG PASSED 
 ```
-docker run -d -p 8090:8080  -e SPRING_PROFILES_ACTIVE=dev -e AUTHOR_NAME=Junaid -e SPRING_DATASOURCE_PASSWORD=PASSWORD -e SPRING_DATASOURCE_USERNAME=USER_NAME -e SPRING_DATASOURCE_URL=jdbc:mysql://HOST:PORT/DB_NAME  greeting-app .
+docker run -d -p 8090:8080  -e SPRING_PROFILES_ACTIVE=dev -e AUTHOR_NAME=Junaid -e SPRING_DATASOURCE_PASSWORD=PASSWORD -e SPRING_DATASOURCE_USERNAME=USER_NAME -e SPRING_DATASOURCE_URL=jdbc:mysql://HOST:PORT/DB_NAME  quartz-app .
 ```
 
 ### AVAILABLE PROFILES
