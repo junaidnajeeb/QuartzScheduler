@@ -3,10 +3,11 @@ package com.quartz.scheduler.model;
 import java.util.HashMap;
 import java.util.Map;
 import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ConsoleJob extends BaseJob {
+public class ConsoleJob extends QuartzJob {
 
 
   private static final Logger logger = LoggerFactory.getLogger(ConsoleJob.class);
@@ -24,14 +25,17 @@ public class ConsoleJob extends BaseJob {
   @Override
   public void run() {
 
-    JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+//    JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+    JobDetail jobDetail = jobExecutionContext.getJobDetail();
 
-    String consoleMessaage = dataMap.getString("message");
+    logger.info("Executing ConsoleJob with id {}", getId());
 
-    logger.info("Executing job for id {}", getId());
-
-    logger.info("Message Found={}", consoleMessaage);
-    logger.info("Message Found={}", message);
+    logger.info("--------------------------------------------------------------------");
+    logger.info("ConsoleJob start: " + jobExecutionContext.getFireTime());
+    logger.info("Example name is: " + jobDetail.getJobDataMap().getString("message"));
+    logger.info("ConsoleJob end: " + jobExecutionContext.getJobRunTime() + ", key: " + jobDetail.getKey());
+    logger.info("ConsoleJob next scheduled time: " + jobExecutionContext.getNextFireTime());
+    logger.info("--------------------------------------------------------------------");
 
   }
 
@@ -48,6 +52,12 @@ public class ConsoleJob extends BaseJob {
 
   public void setMessage(String message) {
     this.message = message;
+  }
+
+  @Override
+  protected void initFromDataMap(Map<String, Object> dataMap) {
+    // TODO Auto-generated method stub
+    
   }
 
 }

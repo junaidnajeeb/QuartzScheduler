@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.google.common.collect.ImmutableSet;
 import com.quartz.scheduler.config.QuartzConfig;
 import com.quartz.scheduler.exception.DuplicateJobKeyException;
 import com.quartz.scheduler.model.QuartzJob;
@@ -59,8 +58,7 @@ public class SchedulerService {
     }
   }
 
-
-  public Map<String, Set<JobKey>> getJobsByGroup() {
+  public Map<String, Set<JobKey>> getAllJobkeys() {
 
     Map<String, Set<JobKey>> groupNameMap = new HashMap<String, Set<JobKey>>();
     try {
@@ -69,11 +67,39 @@ public class SchedulerService {
         groupNameMap.put(group, quartzScheduler.getJobKeys(GroupMatcher.jobGroupEquals((group))));
       }
     } catch (SchedulerException e) {
-      
+
       throw new ServiceException(e.getMessage());
     }
 
     return groupNameMap;
+  }
+
+
+  public Set<JobKey> getJobKeysByGroup(String group) {
+
+    try {
+
+        return quartzScheduler.getJobKeys(GroupMatcher.jobGroupEquals((group)));
+
+    } catch (SchedulerException e) {
+      throw new ServiceException(e.getMessage());
+    }
+  }
+  
+  
+
+
+  public boolean deleteJob(String group, String name) {
+
+    try {
+      QuartzJobKey quartzJobKey = QuartzJobKey.create(group, name);
+      JobKey jobKey = quartzJobKey.buildQuartzJobKey();
+
+      return quartzScheduler.deleteJob(jobKey);
+    } catch (SchedulerException e) {
+      throw new ServiceException(e.getMessage());
+    }
+
   }
 
 }

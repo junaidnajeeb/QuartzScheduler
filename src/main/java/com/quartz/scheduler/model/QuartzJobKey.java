@@ -17,7 +17,7 @@ public abstract class QuartzJobKey {
   }
 
   public JobKey buildQuartzJobKey() {
-    return new JobKey(getName(), getGroup());
+    return new JobKey(getGroup(), getName());
   }
 
   public static QuartzJobKey fromQuartzJobKey(JobKey key) {
