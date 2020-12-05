@@ -56,6 +56,20 @@ http://localhost:8080/swagger-ui.html#
 
 
 ### APIs
+
+#### Health Endpoint
+```
+GET /health HTTP/1.1
+Host: localhost:8080
+```
+
+#### Get all groups with job name list Endpoint
+```
+GET /scheduler/jobGroupKeys HTTP/1.1
+Host: localhost:8080
+```
+
+
 #### Console Job with Relative Trigger
 ```
 POST /scheduler/createJob/group_1 HTTP/1.1
