@@ -23,6 +23,7 @@ import com.quartz.scheduler.config.QuartzConfig;
 import com.quartz.scheduler.exception.DuplicateJobKeyException;
 import com.quartz.scheduler.model.QuartzJob;
 import com.quartz.scheduler.model.QuartzJobKey;
+import com.quartz.scheduler.model.QuartzTrigger;
 
 @Service
 public class SchedulerService {
@@ -42,7 +43,7 @@ public class SchedulerService {
   public void scheduleJob(QuartzJob job) throws DuplicateJobKeyException {
 
     try {
-      JobDetail quartzJobDetail = job.buildQuartzJobDetail();
+      JobDetail quartzJobDetail = job.buildJobDetail();
       Trigger quartzTrigger = job.buildTrigger();
 
       quartzScheduler.scheduleJob(quartzJobDetail, quartzTrigger);
@@ -85,9 +86,36 @@ public class SchedulerService {
       throw new ServiceException(e.getMessage());
     }
   }
-  
-  
 
+  public QuartzJob getJobDetails(String group, String name) {
+    try {
+      QuartzJobKey quartzJobKey = QuartzJobKey.create(group, name);
+      JobKey jobKey = quartzJobKey.buildQuartzJobKey();
+
+      JobDetail jobDetail = quartzScheduler.getJobDetail(jobKey);
+
+      if (jobDetail == null) {
+        throw new ServiceException("Job Details not found");
+      }
+
+      QuartzJob quartzJob = QuartzJob.fromJobDetail(jobDetail);
+
+      List<? extends Trigger> triggers = quartzScheduler.getTriggersOfJob(jobDetail.getKey());
+
+      if (triggers.size() == 0) {
+        throw new ServiceException("No Job Triggers Found");
+      }
+
+      Trigger trigger = triggers.get(0);
+      QuartzTrigger quartzTrigger = QuartzTrigger.fromTrigger(trigger);
+      quartzJob.setJobTrigger(quartzTrigger);
+      
+      return quartzJob;
+      
+    } catch (SchedulerException e) {
+      throw new ServiceException(e.getMessage());
+    }
+  }
 
   public boolean deleteJob(String group, String name) {
 

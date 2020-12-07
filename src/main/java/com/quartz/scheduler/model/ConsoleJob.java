@@ -14,18 +14,18 @@ public class ConsoleJob extends QuartzJob {
   public static final String MESSAGE_DATAMAP_KEY = "message";
 
   private String message;
-  
-  
+
   public ConsoleJob() {
+
   }
-  
+
   public ConsoleJob(String message) {
     this.message = message;
   }
+
   @Override
   public void run() {
 
-//    JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
     JobDetail jobDetail = jobExecutionContext.getJobDetail();
 
     logger.info("Executing ConsoleJob with id {}", getId());
@@ -36,7 +36,6 @@ public class ConsoleJob extends QuartzJob {
     logger.info("ConsoleJob end: " + jobExecutionContext.getJobRunTime() + ", key: " + jobDetail.getKey());
     logger.info("ConsoleJob next scheduled time: " + jobExecutionContext.getNextFireTime());
     logger.info("--------------------------------------------------------------------");
-
   }
 
   @Override
@@ -55,9 +54,8 @@ public class ConsoleJob extends QuartzJob {
   }
 
   @Override
-  protected void initFromDataMap(Map<String, Object> dataMap) {
-    // TODO Auto-generated method stub
-    
+  protected void initJobFromDataMap(Map<String, Object> dataMap) {
+    message = (String)dataMap.get(MESSAGE_DATAMAP_KEY);
   }
 
 }

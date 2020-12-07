@@ -7,7 +7,7 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.springframework.util.StringUtils;
 
-public class RelativeTimeJobTrigger extends JobTrigger {
+public class RelativeTimeJobTrigger extends QuartzTrigger {
 
   private String unit;
   private Long duration;
@@ -41,7 +41,7 @@ public class RelativeTimeJobTrigger extends JobTrigger {
                 )
             )
         )
+        .withDescription(getClass().getSimpleName())
         .build();
   }
-
 }

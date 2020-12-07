@@ -4,7 +4,7 @@ import org.quartz.CronScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 
-public class CronJobTrigger extends JobTrigger {
+public class CronJobTrigger extends QuartzTrigger {
 
   private String cronExpression;
 
@@ -19,9 +19,12 @@ public class CronJobTrigger extends JobTrigger {
   @Override
   protected Trigger buildTrigger() {
 
-    // TODO:: add TimeZone.... maybe at base class level
     return TriggerBuilder.newTrigger()
-        .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)).build();
+        .withSchedule(
+            CronScheduleBuilder.cronSchedule(cronExpression)
+        )
+        .withDescription(getClass().getSimpleName())
+        .build();
   }
 
 }

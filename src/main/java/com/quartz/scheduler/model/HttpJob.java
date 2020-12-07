@@ -1,9 +1,12 @@
 package com.quartz.scheduler.model;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Throwables;
 
 public class HttpJob extends QuartzJob {
 
@@ -26,6 +33,8 @@ public class HttpJob extends QuartzJob {
   private HttpMethod method = HttpMethod.POST;
   private String body;
   private Map<String, String> headers = Collections.emptyMap();
+  private ObjectMapper jsonMapper = new ObjectMapper();
+
 
   @Autowired
   RestTemplate restTemplate;
@@ -75,6 +84,12 @@ public class HttpJob extends QuartzJob {
       jobDataMap.put(BODY_DATAMAP_KEY, body);
     }
 
+    try {
+      jobDataMap.put(HEADERS_JSON_DATAMAP_KEY, jsonMapper.writeValueAsString(headers));
+    } catch (JsonProcessingException e) {
+      throw new ServiceException(e.getMessage());
+    }
+
     return jobDataMap;
 
   }
@@ -115,16 +130,31 @@ public class HttpJob extends QuartzJob {
       return "HttpAuditRecord [request=" + request + ", responseCode=" + responseCode
           + ", responseBody=" + responseBody + "]";
     }
-
   }
 
 
   @Override
-  protected void initFromDataMap(Map<String, Object> dataMap) {
-    // TODO Auto-generated method stub
-    
+  protected void initJobFromDataMap(Map<String, Object> dataMap) {
+
+    try {
+      url = new URL((String) dataMap.get(URL_DATAMAP_KEY));
+    } catch (MalformedURLException e) {
+      throw new ServiceException(e.getMessage());
+    }
+    method = HttpMethod.valueOf((String) dataMap.get(METHOD_DATAMAP_KEY));
+    body = (String) dataMap.get(BODY_DATAMAP_KEY);
+    setHeadersJson((String) dataMap.get(HEADERS_JSON_DATAMAP_KEY));
   }
-  
-  
+
+
+  @SuppressWarnings("unchecked")
+  @JsonIgnore
+  public void setHeadersJson(String json) {
+    try {
+      headers = jsonMapper.readValue(json, Map.class);
+    } catch (IOException e) {
+      throw new ServiceException(e.getMessage());
+    }
+  }
 
 }

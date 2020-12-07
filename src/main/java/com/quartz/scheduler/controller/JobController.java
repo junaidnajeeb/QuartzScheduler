@@ -55,12 +55,13 @@ public class JobController {
   public ResponseEntity<Set<JobKey>> getJobkeysByGroup(@PathVariable String group) {
     return ResponseEntity.ok(schedulerService.getJobKeysByGroup(group));
   }
-  
+
+
   @RequestMapping(value = "/jobDetails/group/{group}/job/{name}", method = RequestMethod.GET)
-  public ResponseEntity<Object> getJobDetails(@PathVariable String group, @PathVariable String name) {
+  public ResponseEntity<QuartzJob> getJobDetails(@PathVariable String group, @PathVariable String name) {
 
-    return new ResponseEntity<>("", new HttpHeaders(), HttpStatus.NOT_IMPLEMENTED);
-
+    QuartzJob quartzJob = schedulerService.getJobDetails(group, name);
+    return ResponseEntity.ok(quartzJob);
   }
 
 
@@ -72,7 +73,6 @@ public class JobController {
     }
     return ResponseEntity.noContent().build();
   }
-
 
 
 }

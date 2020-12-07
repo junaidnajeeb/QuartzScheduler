@@ -5,7 +5,7 @@ import java.util.Date;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 
-public class FixedTimeJobTrigger extends JobTrigger {
+public class FixedTimeJobTrigger extends QuartzTrigger {
 
   private Instant when;
 
@@ -20,7 +20,10 @@ public class FixedTimeJobTrigger extends JobTrigger {
   @Override
   protected Trigger buildTrigger() {
 
-    return TriggerBuilder.newTrigger().startAt(Date.from(getWhen())).build();
+    return TriggerBuilder
+            .newTrigger()
+            .startAt(Date.from(getWhen()))
+            .withDescription(getClass().getSimpleName())
+            .build();
   }
-  
 }
