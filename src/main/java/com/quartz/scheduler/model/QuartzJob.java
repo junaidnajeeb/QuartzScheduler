@@ -18,7 +18,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes(
   {
     @JsonSubTypes.Type(value = ConsoleJob.class, name = "console"),
-    @JsonSubTypes.Type(value = HttpJob.class, name = "http")
+    @JsonSubTypes.Type(value = HttpJob.class, name = "http"),
+    @JsonSubTypes.Type(value = SMSJob.class, name = "sms")
   }
 )
 public abstract class QuartzJob implements Job, Runnable {

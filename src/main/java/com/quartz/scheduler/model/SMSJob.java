@@ -5,6 +5,12 @@ import java.util.Map;
 import org.quartz.JobDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.rest.api.v2010.account.MessageCreator;
+import com.twilio.type.PhoneNumber;
 
 public class SMSJob extends QuartzJob {
 
@@ -14,6 +20,10 @@ public class SMSJob extends QuartzJob {
   
   private String message;
   private String phoneNumber;
+  
+  @Autowired
+  private Environment env;
+
   
   public SMSJob() {
 
@@ -53,20 +63,24 @@ public class SMSJob extends QuartzJob {
     jobDataMap.put("phoneNumber", getPhoneNumber());
     return jobDataMap;
   }
-  
+
+
   @Override
   public void run() {
 
-    JobDetail jobDetail = jobExecutionContext.getJobDetail();
-
     logger.info("Executing SMSJob -> integrate with SMS API service here with id {}", getId());
+    String ACCOUNT_SID = env.getProperty("twilio.account.id");
+    String AUTH_TOKEN = env.getProperty("twilio.account.token");
+    Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
-    logger.info("--------------------------------------------------------------------");
-    logger.info("SMSJob start: " + jobExecutionContext.getFireTime());
-    logger.info("message is: " + jobDetail.getJobDataMap().getString("message"));
-    logger.info("phoneNumber is: " + jobDetail.getJobDataMap().getString("phoneNumber"));
-    logger.info("SMSJob end: " + jobExecutionContext.getJobRunTime() + ", key: " + jobDetail.getKey());
-    logger.info("SMSJob next scheduled time: " + jobExecutionContext.getNextFireTime());
-    logger.info("--------------------------------------------------------------------");
+    MessageCreator messageCreater = Message
+      .creator(new PhoneNumber(getPhoneNumber()), // to
+             new PhoneNumber(getPhoneNumber()), // from
+             getMessage());
+
+     // send
+     Message message = messageCreater.create();
+     //System.out.println(message.getSid());
+
   }
 }

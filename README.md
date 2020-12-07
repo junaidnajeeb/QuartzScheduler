@@ -36,7 +36,7 @@ docker build -t quartz-app .
 
 ### RUN DETACTED CONTAINER WITH ALL CONFIG PASSED 
 ```
-docker run -d -p 8090:8080  -e SPRING_PROFILES_ACTIVE=dev -e AUTHOR_NAME=Junaid -e SPRING_DATASOURCE_PASSWORD=PASSWORD -e SPRING_DATASOURCE_USERNAME=USER_NAME -e SPRING_DATASOURCE_URL=jdbc:mysql://HOST:PORT/DB_NAME  quartz-app .
+docker run -d -p 8090:8080  -e SPRING_PROFILES_ACTIVE=dev -e AUTHOR_NAME=Junaid -e SPRING_DATASOURCE_PASSWORD=PASSWORD -e SPRING_DATASOURCE_USERNAME=USER_NAME -e SPRING_DATASOURCE_URL=jdbc:mysql://HOST:PORT/DB_NAME -e TWILIO_ACCOUNT_TOKEN=TOKEN_FOR_SMS -e TWILIO_ACCOUNT_ID=IS_USED_FOR_SMS_JOB quartz-app .
 ```
 
 ### AVAILABLE PROFILES
@@ -149,7 +149,6 @@ Content-Type: application/json
 POST /scheduler/createJob/group_1 HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
-Cookie: JSESSIONID=311DAEE50AD0E5E5AB1E189A7C46C458
 
 {
     "type" : "http",
@@ -157,6 +156,43 @@ Cookie: JSESSIONID=311DAEE50AD0E5E5AB1E189A7C46C458
     "method": "GET",
     "headers": {"Content-Type": "application/json"},
     "url": "http://httpbin.org/get",
+    "jobTrigger" : {
+        "duration" : 10,
+        "unit" : "Seconds",
+        "type" : "relative"
+    }
+}
+```
+
+#### GET job details
+```
+GET /scheduler/jobDetails/group/group_sms/job/MessageToMe HTTP/1.1
+Host: localhost:8080
+{
+    "type" : "http",
+    "name": "group_2:http8",
+    "method": "GET",
+    "headers": {"Content-Type": "application/json"},
+    "url": "http://httpbin.org/get",
+    "jobTrigger" : {
+        "duration" : 10,
+        "unit" : "Seconds",
+        "type" : "relative"
+    }
+}
+```
+
+
+```
+POST /scheduler/createJob/group_sms HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "type" : "sms",
+    "name": "MessageToMe",
+    "message": "Hello Junaid",
+    "phoneNumber": "+1222111000",
     "jobTrigger" : {
         "duration" : 10,
         "unit" : "Seconds",
